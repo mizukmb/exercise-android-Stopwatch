@@ -3,6 +3,9 @@ package com.example.stopwatch
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 
@@ -18,6 +21,12 @@ class MainActivity : AppCompatActivity() {
         val startButton = findViewById<Button>(R.id.start)
         val stopButton = findViewById<Button>(R.id.stop)
         val resetButton = findViewById<Button>(R.id.reset)
+        val rapButton = findViewById<Button>(R.id.rap_button)
+        val rapList = findViewById<RecyclerView>(R.id.rap_list)
+
+        val rapAdaptor = RapAdaptor(this)
+        rapList.adapter = rapAdaptor
+        rapList.layoutManager = LinearLayoutManager(this)
 
         val runnable = object : Runnable {
             override fun run() {
@@ -44,6 +53,12 @@ class MainActivity : AppCompatActivity() {
             timeToText()?.let {
                 timeText.text = it
             }
+        }
+
+        rapButton.setOnClickListener {
+            Log.d("debug", "Called!!")
+            rapAdaptor.addRap(timeText.text.toString())
+            rapAdaptor.notifyDataSetChanged()
         }
     }
 
